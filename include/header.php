@@ -25,13 +25,13 @@
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    
+  <img src="img/cc.png" style="width:76px;height:70px;">     
             
-    <h4>Library Management System</h4>
+    <!-- <h4>Library Management System</h4>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
-    </button>
+    </button> -->
    
            
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">

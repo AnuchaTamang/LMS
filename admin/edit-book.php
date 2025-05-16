@@ -86,7 +86,7 @@ if(isset($_REQUEST['save-book-btn']))
             <div class="form-group row">
           <label class="col-lg-4 col-form-label" for="price">Book No <span class="text-danger">*</span></label>
            <div class="col-lg-6">
-          <input type="text" name="isbn" id="isbn" class="form-control" placeholder="Enter ISBN" required value="<?php echo $row['isbnno'];?>">
+          <input type="text" name="isbn" id="isbn" class="form-control" placeholder="Enter book number" required value="<?php echo $row['isbnno'];?>">
            </div>
       </div> 
       <div class="form-group row">

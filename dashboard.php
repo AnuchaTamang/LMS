@@ -14,6 +14,25 @@ $select_book = mysqli_query($conn,"select count(*) from tbl_book where availabil
 $issued_book = mysqli_query($conn,"select count(*) from tbl_issue where user_id='$id'  and status=1");
  $issued_book = mysqli_fetch_row($issued_book);
 
+ $fine_per_day = 6; 
+ $total_fine = 0;
+ 
+ $fetch_issues = mysqli_query($conn, "SELECT due_date FROM tbl_issue WHERE user_id='$id' AND status=1");
+ 
+ $today = date('Y-m-d');
+ while($row = mysqli_fetch_assoc($fetch_issues)) {
+     $due_date = $row['due_date'];
+     $due = new DateTime($due_date);
+     $now = new DateTime($today);
+ 
+     if ($now > $due) {
+         $diff = $due->diff($now)->days;
+         $total_fine += $diff * $fine_per_day;
+     }
+ }
+ 
+
+
 
 include('include/header.php'); ?>
 
@@ -34,6 +53,7 @@ include('include/header.php'); ?>
         </ol>
 
         <div class="row">
+
   <div class="col-sm-4">
     <section class="panel panel-featured-left panel-featured-primary">
       <div class="panel-body total">
@@ -67,11 +87,34 @@ include('include/header.php'); ?>
               <i class="fa fa-book"></i>
             </div>
           </div>
+
           <div class="widget-summary-col">
             <div class="summary">
               <h4 class="title">Book Issued</h4>
               <div class="info">
-                <strong class="amount"><?php echo $issued_book[0]; ?></strong><br>
+                <strong class="amount"><?php echo $issued_book[0]; ?></strong><br>               
+              </div>
+            </div>         
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="col-sm-4">
+    <section class="panel panel-featured-left panel-featured-primary">
+      <div class="panel-body total">
+        <div class="widget-summary">
+          <div class="widget-summary-col widget-summary-col-icon">
+            <div class="summary-icon bg-secondary">
+              <i class="fa fa-book"></i>
+            </div>
+          </div>
+          <div class="widget-summary-col">
+            <div class="summary">
+              <h4 class="title">Fine</h4>
+              <div class="info">
+                <strong class="amount"><?php echo $total_fine; ?></strong><br>
                  
               </div>
             </div>

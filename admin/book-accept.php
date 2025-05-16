@@ -4,7 +4,7 @@ if(!empty($_GET['id']))
 {
 $id = $_GET['id'];
 $duedate = date('Y-m-d');
-$newdate = date('Y-m-d', strtotime($duedate. ' + 3 months'));
+$newdate = date('Y-m-d', strtotime($duedate. ' + 7 days'));
 $update_issue = mysqli_query($conn, "update tbl_issue set status=1, issue_date=CURDATE(), due_date='$newdate' where id='$id'");
 
 $select_book_id = mysqli_query($conn,"select book_id from tbl_issue where id='$id'");

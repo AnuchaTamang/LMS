@@ -28,9 +28,11 @@ if(empty($ids))
         </ol>
 
   <div class="card mb-3">
-          <div class="card-header">
+          <!-- <div class="card-header">
             <i class="fa fa-info-circle"></i>
-            View Book Details</div>
+            View Book Details
+          </div> -->
+
             <div class="card-body">
             <div class="table-responsive">
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

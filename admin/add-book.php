@@ -79,7 +79,7 @@ if(isset($_REQUEST['sbt-book-btn']))
                                    <div class="form-group row">
                                       <label class="col-lg-4 col-form-label" for="price">Book No <span class="text-danger">*</span></label>
                                        <div class="col-lg-6">
-                                      <input type="text" name="isbn" id="isbn" class="form-control" placeholder="Enter ISBN" required>
+                                      <input type="text" name="isbn" id="isbn" class="form-control" placeholder="Enter book number" required>
                                        </div>
                                   </div>     
                                                                             

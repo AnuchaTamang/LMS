@@ -1,84 +1,110 @@
 <?php
+    include('../connection.php');
+    
+?>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Admin Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="style.css">
+
+    </head>
+    <style>
+    .log_img{
+    height: 820px;
+    width: 100%;
+    margin-top:0px;
+    background-image: url('../img/library-img-bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+}
+
+.box1{
+    height: 350px;
+    width: 450px;
+    background-color: #cfdbe4;
+    margin: 100px auto;
+    opacity: .9;
+    padding: 20px;
+    border-radius: 8px;
+}
+form .login{
+    margin: auto 20px ;
+}
+
+input{
+    height: 40px;
+    width: 360px;
+}
+    </style>
+    <body>
+
+        <section>
+            <div class="log_img">
+                <br><br>
+                <div class="box1">
+                    <!-- <h1 style="text-align: center; font-size: 30px;font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                        Library Management System</h1><br> -->
+                    <h1 style="text-align: center;font-size: 30px;">Admin Login Form</h1><br>
+                    
+                    <form name="login" action="" method="post">
+                        <br>
+                        <div class="login">
+                            <input class="form-control" type="text" name="email" placeholder="Enter your email" required><br>
+                            <input class="form-control" type="password" name="password" placeholder="Enter your password" required><br>
+
+                            <input class="btn btn-primary" type="submit" name="submit" value="Login" style="color: white; width:100%;height: 40px;margin-top: 8px;">
+                        </div>
+                    
+
+
+                        <!-- <p style="color: black; padding-left: 20px;">
+                            <br>
+                            New User?<a style="color: blue;text-align: center;" href="registration.php"> Sign Up</a>
+                        </p> -->
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <?php
 session_start();
-include '../connection.php';
-if(isset($_REQUEST['login_btn']))
-{
+// $conn must be defined here
+
+// include('../connection.php'); 
+if(isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = mysqli_real_escape_string($conn, $_POST['pwd']);
-    $pwd = md5($password);
-    
-    
-    $select_query = mysqli_query($conn,"select id, user_name from admin where emailid='$email' and password='$pwd'");
-    $rows = mysqli_num_rows($select_query);
-    if($rows > 0)
-    {
-    $username = mysqli_fetch_row($select_query);
-    
-    $_SESSION['id'] = $username[0];
-    $_SESSION['name'] = $username[1];
-    header("Location: dashboard.php"); 
-    }
-    else
-    { ?>
-    <script>
-            alert("You have entered wrong emailid or password.");
-        </script>
-    
-    <?php
-        
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $hashed_password = md5($password); // match the same way as in index.php
+
+    $query = "SELECT name, id FROM admin WHERE email='$email' AND password='$hashed_password' ";
+    $res = mysqli_query($conn, $query);
+
+    if(mysqli_num_rows($res) == 1) {
+        $row = mysqli_fetch_assoc($res);
+        $_SESSION['name'] = $row['name'];
+        $_SESSION['id'] = $row['id'];
+
+        echo "<script>window.location='dashboard.php';</script>";
+        exit();
+    } else {
+        echo "<script>alert('Invalid email or password');</script>";
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-  
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>Library Management System</title>
-  <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-  <!-- Custom styles for this template-->
-  <link href="css/sb-admin.css" rel="stylesheet">
-  <link href="css/custom_style.css?ver=1.1" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css' rel='stylesheet' />
-  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-</head>
-
-<body class="bg-dark" style="background: url(../img/library-img-bg.jpg) no-repeat;  background-size:cover">
-
-  <div class="container">
-    <div class="card card-login mx-auto mt-5">
-      <div class="card-header">
-       <h2><center style="color:coral;">Admin Login</center></h2>
-      </div>
-      <div class="card-body">
-        <form name="login"  method="post" action="">
-          <div class="form-group">
-            <div class="form-label-group">
-              <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email address" required="required" autofocus="autofocus">
-              <label for="inputEmail">Email address</label>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-label-group">
-              <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="pwd" required="required">
-              <label for="inputPassword">Password</label>
-            </div>
-          </div>
-          
-          <input type="submit"  class="btn btn-primary btn-block" name="login_btn" value="Login">
-        </form>
-       
-      </div>
-    </div>
-  </div>
-</body>
+    </body>
 </html>

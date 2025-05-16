@@ -21,5 +21,14 @@
         </a>
         
       </li>
+
+      </li>
+       <li class="nav-item ">
+        <a class="nav-link " href="new_fine_calc.php" style="color: white;">
+          <i class="fa fa-book"></i>
+          <span>Fine </span>
+        </a>
+        
+      </li>
     
     </ul>
