@@ -23,78 +23,88 @@ if(empty($id))
           <li class="breadcrumb-item">
             <a href="#">View Book</a>
           </li>
-          
         </ol>
 
-  <div class="card mb-3">
+        <div class="card mb-3">
           <!-- <div class="card-header">
             <i class="fa fa-info-circle"></i>
             View Book Details
           </div> -->
 
-            <div class="card-body">
+          <div class="card-body">
             <div class="table-responsive">
-    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-              <tr>
-                  <th>S.No.</th>
-                  <th>Name</th>
-                  <th>Category</th>
-                  <th>Book No</th>
-                  <th>Author</th>
-                  <th>Publisher</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Status</th>
-                  <th>Action</th>
-              </tr>
-            </thead>
-        <tbody>
-          <?php
-          if(isset($_GET['ids'])){
-          $id = $_GET['ids'];
-          $delete_query = mysqli_query($conn, "delete from tbl_book where id='$id'");
-          }
-          $select_query = mysqli_query($conn, "select * from tbl_book");
-          $sn = 1;
-          while($row = mysqli_fetch_array($select_query))
-          { 
-          ?>
-            <tr>
-                <td><?php echo $sn; ?></td>
-                <td><?php echo $row['book_name']; ?></td>
-                
-                <td><?php echo $row['category']; ?></td>
-                <td><?php echo $row['isbnno']; ?></td>
-                <td><?php echo $row['author']; ?></td>
-                <td><?php echo $row['publisher']; ?></td>
-                <td><?php echo $row['price']; ?></td>
-                <td><?php echo $row['quantity']; ?></td>
-                <?php if($row['availability']==1)
-                {
-                  ?><td><span class="badge badge-success">Available</span></td>
-                  <?php } 
-                  else { ?>
-                  <td><span class="badge badge-danger">Not Available</span></td>
-                  <?php } ?>   
-                  <td>
-                    <a href="edit-book.php?id=<?php echo $row['id'];?>"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                    <a href="view-book.php?ids=<?php echo $row['id'];?>" onclick="return confirmDelete()"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                  </td>
-              </tr>
-          <?php $sn++; } ?>
-        </tbody>
-  </table>
-</div>
-</div>                   
-</div>
-</div>
-</div>
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>S.No.</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Book No</th>
+                    <th>Author</th>
+                    <th>Publisher</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  if(isset($_GET['ids'])){
+                    $id = $_GET['ids'];
+                    $delete_query = mysqli_query($conn, "DELETE FROM tbl_book WHERE id='$id'");
+                  }
+                  $select_query = mysqli_query($conn, "SELECT * FROM tbl_book");
+                  $sn = 1;
+                  while($row = mysqli_fetch_array($select_query))
+                  { 
+                  ?>
+                  <tr>
+                    <td><?php echo $sn; ?></td>
+                    <td><?php echo $row['book_name']; ?></td>
+                    <td><?php echo $row['category']; ?></td>
+                    <td><?php echo $row['isbnno']; ?></td>
+                    <td><?php echo $row['author']; ?></td>
+                    <td><?php echo $row['publisher']; ?></td>
+                    <td><?php echo $row['price']; ?></td>
+                    <td><?php echo $row['quantity']; ?></td>
+
+                    <?php if ($row['availability'] == 1): ?>
+                      <td><span class="badge badge-success">Available</span></td>
+                      <td>
+                        <a href="edit-book.php?id=<?php echo $row['id']; ?>"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        <a href="view-book.php?ids=<?php echo $row['id']; ?>" onclick="return confirmDelete()"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+
+                        <form method="POST" action="../reserve_book.php" style="display:inline;">
+                          <input type="hidden" name="book_id" value="<?php echo $row['id']; ?>">
+                          <button type="submit" class="btn btn-primary btn-sm ml-2">Reserve</button>
+                        </form>
+                      </td>
+                    <?php else: ?>
+                      <td><span class="badge badge-danger">Not Available</span></td>
+                      <td>
+                        <a href="edit-book.php?id=<?php echo $row['id']; ?>"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        <a href="view-book.php?ids=<?php echo $row['id']; ?>" onclick="return confirmDelete()"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                      </td>
+                    <?php endif; ?>
+
+                  </tr>
+                  <?php $sn++; } ?>
+                </tbody>
+              </table>
+            </div>
+          </div>                   
+        </div>
+      </div>
+    </div>
+    
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+    
 <?php include('include/footer.php'); ?>
- <script language="JavaScript" type="text/javascript">
+
+<script language="JavaScript" type="text/javascript">
 function confirmDelete(){
     return confirm('Are you sure want to delete this Book?');
 }
