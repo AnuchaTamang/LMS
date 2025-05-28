@@ -14,7 +14,7 @@ $select_book = mysqli_query($conn,"select count(*) from tbl_book where availabil
 $issued_book = mysqli_query($conn,"select count(*) from tbl_issue where user_id='$id'  and status=1");
  $issued_book = mysqli_fetch_row($issued_book);
 
- $fine_per_day = 6; 
+ $fine_per_day = 10; 
  $total_fine = 0;
  
  $fetch_issues = mysqli_query($conn, "SELECT due_date FROM tbl_issue WHERE user_id='$id' AND status=1");
@@ -44,13 +44,14 @@ include('include/header.php'); ?>
 
       <div class="container-fluid">
 
-        <!-- Breadcrumbs-->
+        <!-- Breadcrumbs
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="#">Dashboard</a>
           </li>
           
-        </ol>
+        </ol> -->
+        <h4>Dashboard</h4>
 
         <div class="row">
 

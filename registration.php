@@ -85,7 +85,7 @@ include('connection.php');
                             <br>
                             <!-- <a style="color: red;font-style: italic; padding-left: 22px;" href="">Forget Password</a> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp -->
                             Already have an account? <a style="color: blue; text-align:center;"
-                                href="login.php">Login</a>
+                                href="index.php">Login</a>
                         </p>
 
                     </div>
@@ -108,6 +108,11 @@ include('connection.php');
         $password = md5(mysqli_real_escape_string($conn, $_POST['password']));
 
 
+        // Phone number validation: must be exactly 10 digits
+        if (!preg_match("/^[0-9]{10}$/", $contact)) {
+            echo "<script>alert('Invalid phone number. Please enter exactly 10 digits.');</script>";
+            exit(); // Stop further execution if phone is invalid
+        }
 
 
         // Check if email already exists

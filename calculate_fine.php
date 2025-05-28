@@ -2,7 +2,7 @@
 session_start();
 include('connection.php');
 
-$fine_per_day = 10; // Set your fine rate here
+$fine_per_day = 10; //fine rate here
 
 $query = "SELECT i.*, b.title, s.fullname 
           FROM tbl_issue i 

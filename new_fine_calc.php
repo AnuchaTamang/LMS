@@ -9,7 +9,7 @@ if(empty($name))
 }
 
 // Fine rate
-$fine_per_day =6;
+$fine_per_day =10;
 
 // Fetch issued books where status = 1 (accepted/issued)
 $sql = "SELECT issue.id, issue.book_id, issue.user_name, issue.issue_date, issue.due_date, books.book_name 
@@ -61,9 +61,9 @@ include('include/header.php');
     <div style="width: 250px;">
         <?php include('include/side-bar.php'); ?>
     </div>
-    <div style="flex-grow: 1; padding: 20px;">
+    <div style="flex-grow: 1; padding-left: 5px; ">
 
-    <h2>Fine Calculation</h2>
+    <h4>Fine Calculation</h4>
 
 <table>
     <thead>
