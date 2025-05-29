@@ -58,6 +58,13 @@ include('connection.php');
         <div class="log_img">
             <br><br>
             <div class="box1">
+
+                <?php
+                if (isset($_GET['timeout']) && $_GET['timeout'] == 1) {
+                    echo "<div class='alert alert-warning text-center'>Session expired due to inactivity. Please login again.</div>";
+                }
+                ?>
+
                 <!-- <h1 style="text-align: center; font-size: 30px;font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
                         Library Management System</h1><br> -->
                 <h1 style="text-align: center;font-size: 30px;">Student Login Form</h1>

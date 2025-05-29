@@ -1,5 +1,7 @@
 <?php
 session_start();
+include('session_check.php');
+
 include('connection.php');  // Adjust path if needed
 
 // Check if user is logged in
