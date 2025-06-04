@@ -1,7 +1,9 @@
 <?php
 session_start();
+include('admin_session_check.php');
 include ('../connection.php');
 
+include('admin_session_check.php');
 $name = $_SESSION['name'];
 $id = $_SESSION['id'];
 if(empty($id)) {

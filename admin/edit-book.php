@@ -1,5 +1,6 @@
 <?php
 session_start();
+include('admin_session_check.php');
 include ('../connection.php');
 $id = $_SESSION['id'];
 $name = $_SESSION['name'];

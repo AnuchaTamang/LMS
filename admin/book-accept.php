@@ -1,4 +1,5 @@
 <?php
+include('admin_session_check.php');
 include('../connection.php');
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];

@@ -1,11 +1,16 @@
 <?php
+session_start();
 include('../connection.php');
 
+//redirect to dashboard if already logged in
+if(isset($_SESSION['id'])){
+    header("Location: dashboard.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Admin Login</title>
     <meta charset="UTF-8">

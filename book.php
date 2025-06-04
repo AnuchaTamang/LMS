@@ -3,115 +3,135 @@ session_start();
 include('session_check.php');
 
 include ('connection.php');
-$name = $_SESSION['user_name'];
-$ids = $_SESSION['id'];
-if(empty($ids))
-{
-    header("Location: index.php"); 
+
+// Ensure user is logged in
+if (empty($_SESSION['id'])) {
+    header("Location: index.php");
+    exit();
 }
 
+$name = $_SESSION['user_name'];
+$ids = $_SESSION['id'];
+
+// Handle deletion if 'ids' parameter is passed
+if (isset($_GET['ids'])) {
+    $deleteId = intval($_GET['ids']); // Prevent SQL injection
+    $delete_query = mysqli_query($conn, "DELETE FROM tbl_book WHERE id = '$deleteId'");
+}
 ?>
 
 <?php include('include/header.php'); ?>
-  <div id="wrapper">
 
+<div id="wrapper">
     <?php include('include/side-bar.php'); ?>
 
     <div id="content-wrapper">
+        <div class="container-fluid">
 
-      <div class="container-fluid">
+            <!-- Breadcrumbs -->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">View Book</a>
+                </li>
+            </ol>
 
-        <!-- Breadcrumbs-->
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="#">View Book</a>
-          </li>
-          
-        </ol>
+            <!-- Card for Book List -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <!-- Book Table -->
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Author</th>
+                                    <th>ISBN</th>
+                                    <th>Availability</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                // Fetch all available books
+                                $select_query = mysqli_query($conn, "SELECT * FROM tbl_book WHERE availability = 1");
+                                $sn = 1;
 
-  <div class="card mb-3">
-          <!-- <div class="card-header">
-            <i class="fa fa-info-circle"></i>
-            View Book Details
-          </div> -->
+                                while ($row = mysqli_fetch_array($select_query)) {
+                                    $bookId = $row['id'];
+                                    ?>
+                                    <tr>
+                                        <!-- Display book details -->
+                                        <td><?php echo $sn++; ?></td>
+                                        <td><?php echo htmlspecialchars($row['book_name']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['category']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['author']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['isbnno']); ?></td>
 
-            <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                                            <tr>
-                                                <th>S.No.</th>
-                                                <th>Name</th>
-                                                <th>Category</th>
-                                                <th>Author</th>
-                                                <th>ISBN</th>
-                                                <th>Availability</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-										<?php
-                    if(isset($_GET['ids'])){
-                      $id = $_GET['ids'];
-                      $delete_query = mysqli_query($conn, "delete from tbl_book where id='$id'");
-                      }
-										$select_query = mysqli_query($conn, "select * from tbl_book where availability=1");
-										$sn = 1;
-										while($row = mysqli_fetch_array($select_query))
-										{ 
-										    ?>
-                                            <tr>
-                                                <td><?php echo $sn; ?></td>
-                                                <td><?php echo $row['book_name']; ?></td>
-                                                
-                                                <td><?php echo $row['category']; ?></td>
-                                                <td><?php echo $row['author']; ?></td>
-                                                <td><?php echo $row['isbnno']; ?></td>
-                                                <?php if($row['availability']==1){
-                                                  ?><td><span class="badge badge-success">Available</span></td>
-                                        <?php } else { ?><td><span class="badge badge-danger">Not Available</span></td>
-                                           <?php } 
-                                          $id = $row['id'];
-                                         
-                                          $fetch_issue_details = mysqli_query($conn, "select status from tbl_issue where user_id='$ids' and book_id='$id'");
-                                        $res = mysqli_fetch_row($fetch_issue_details);
-                                          if(!empty($res)){
-                                          $res = $res[0];
-                                           }
-                                           if($res==1){
+                                        <!-- Availability Status -->
+                                        <td>
+                                            <?php if ($row['availability'] == 1): ?>
+                                                <span class="badge badge-success">Available</span>
+                                            <?php else: ?>
+                                                <span class="badge badge-danger">Not Available</span>
+                                            <?php endif; ?>
+                                        </td>
+
+                                        <!-- Action Buttons Based on Issue Status -->
+                                        <td>
+                                            <?php
+                                            $issue_query = mysqli_query($conn, "SELECT status FROM tbl_issue WHERE user_id = '$ids' AND book_id = '$bookId'");
+                                            $issue_status = mysqli_fetch_row($issue_query);
+                                            $status = $issue_status[0] ?? null;
+
+                                            if ($status == 1) {
+                                                echo '<span class="badge badge-success">Issued</span>';
+                                            } elseif ($status == 2) {
+                                                echo '<span class="badge badge-danger">Rejected</span>';
+                                            } elseif ($status == 3) {
+                                                echo '<span class="badge badge-primary">Request Sent</span>';
+                                            } else {
                                                 ?>
-                                          <td><span class="badge badge-success">Issued</span>
-                                           </td>
+                                                <!-- Issue and Delete Buttons -->
+                                                <a href="book-issue.php?id=<?php echo $bookId; ?>">
+                                                    <button class="btn btn-success btn-sm">Issue</button>
+                                                </a>
+                                                <a href="view-book.php?ids=<?php echo $bookId; ?>" onclick="return confirmDelete();">
+                                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                                </a>
                                                 <?php
-                                               } else if($res==2){
-                                                ?>
-                                          <td><span class="badge badge-danger">Rejected</span>
-                                           </td>
-                                         <?php } 
-                                         else if($res==3){
-                                                ?>
-                                          <td><span class="badge badge-primary">Request Sent</span>
-                                           </td>
-                                         <?php }
-                                               else { ?>
-                                                <td><a href="book-issue.php?id=<?php echo $row['id']; ?>"><button class="btn btn-success">Issue</button></a>
-                                               </td>
-                                               <?php } ?>
-                                            </tr>
-										<?php $sn++; } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>                   
-                        </div>
+                                            }
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                        <!-- End Book Table -->
                     </div>
                 </div>
+            </div>
+            <!-- End Card -->
+        </div>
+        <!-- End Container -->
+    </div>
+    <!-- End Content Wrapper -->
+</div>
+<!-- End Wrapper -->
+
+<!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
+
 <?php include('include/footer.php'); ?>
- <script language="JavaScript" type="text/javascript">
-function confirmDelete(){
-    return confirm('Are you sure want to delete this Book?');
+
+<!-- Confirm Delete Script -->
+<script type="text/javascript">
+function confirmDelete() {
+    return confirm('Are you sure you want to delete this Book?');
 }
 </script>

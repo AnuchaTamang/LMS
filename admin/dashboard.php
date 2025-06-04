@@ -1,7 +1,8 @@
 <?php
-
-include '../connection.php';
 session_start();
+include '../connection.php';
+
+include('admin_session_check.php');
 if (!isset($_SESSION['id']) || !isset($_SESSION['name'])) {
     header("Location: index.php");
     exit();
