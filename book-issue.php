@@ -1,5 +1,6 @@
 <?php 
 session_start();
+include('session_check.php'); //Handles login and session timeout
 include ('connection.php');
 $name = $_SESSION['user_name'];
 $ids = $_SESSION['id'];

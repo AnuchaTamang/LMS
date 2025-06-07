@@ -1,5 +1,6 @@
 <?php
 session_start();
+include('session_check.php');
 include('connection.php');
 
 $fine_per_day = 10; //fine rate here

@@ -1,6 +1,6 @@
 <?php
 session_start();
-//include('session_check.php');  // This file handles session validation and redirects if needed
+include('session_check.php');  // This file handles session validation and redirects if needed
 include('connection.php');
 
 if (!isset($_SESSION['id']) || empty($_SESSION['id'])) {
