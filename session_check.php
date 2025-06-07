@@ -2,9 +2,8 @@
 session_start();
 
 // 15-minute inactivity timeout
-// $timeout_duration = 900;
+$timeout_duration = 300;
 
-$timeout_duration = 30;
 
 if (!isset($_SESSION['id'])) {
     // User is not logged in

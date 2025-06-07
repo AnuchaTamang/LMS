@@ -7,7 +7,7 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['name'])) {
     header("Location: index.php");
     exit();
 }
-$name = $_SESSION['name']; // Now you can use this to display user's name
+$name = $_SESSION['name'];
 
 
  $select_user = mysqli_query($conn,"select count(*) from reg_student");

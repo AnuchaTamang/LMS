@@ -3,7 +3,7 @@ session_start();
 include('admin_session_check.php');
 include ('../connection.php');
 
-include('admin_session_check.php');
+// Safely retrieve session values
 $name = $_SESSION['name'];
 $id = $_SESSION['id'];
 if(empty($id)) {
@@ -98,10 +98,6 @@ if(empty($id)) {
                     <td>
                       <a href="edit-book.php?id=<?php echo $row['id']; ?>"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                       <a href="view-book.php?ids=<?php echo $row['id']; ?>" onclick="return confirmDelete()"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                      <form method="POST" action="../reserve_book.php" style="display:inline;">
-                        <input type="hidden" name="book_id" value="<?php echo $row['id']; ?>">
-                        <button type="submit" class="btn btn-primary btn-sm ml-2">Reserve</button>
-                      </form>
                     </td>
                   <?php else: ?>
                     <td><span class="badge badge-danger">Not Available</span></td>

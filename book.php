@@ -93,13 +93,17 @@ if (isset($_GET['ids'])) {
                                                 echo '<span class="badge badge-primary">Request Sent</span>';
                                             } else {
                                                 ?>
-                                                <!-- Issue and Delete Buttons -->
+                                                <!-- Issue Buttons -->
                                                 <a href="book-issue.php?id=<?php echo $bookId; ?>">
-                                                    <button class="btn btn-success btn-sm">Issue</button>
-                                                </a>
-                                                <a href="view-book.php?ids=<?php echo $bookId; ?>" onclick="return confirmDelete();">
-                                                    <button class="btn btn-danger btn-sm">Delete</button>
-                                                </a>
+                                                    <button class="btn btn-success btn-sm">Issue</button></a>
+                                                
+                                                <!-- reserve button  -->
+                                                <a href="book-reserve.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning mt-1">Reserve</a>
+
+                                                <!-- delete button -->
+                                                <!-- <a href="view-book.php?ids=<?php echo $bookId; ?>" onclick="return confirmDelete();">
+                                                    <button class="btn btn-danger btn-sm">Delete</button></a> -->
+
                                                 <?php
                                             }
                                             ?>

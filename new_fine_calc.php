@@ -1,10 +1,11 @@
 <?php
 session_start();
 include('session_check.php');
+include 'connection.php';
 
 $name = $_SESSION['user_name'];
 $id = $_SESSION['id'];
-include 'connection.php';
+
 if(empty($name))
 {
     header("Location: index.php"); 
