@@ -10,6 +10,8 @@
   <meta name="author" content="">
 
   <title>Library Management System</title>
+  <link rel="icon" href="../img/LMS.png" type="image/png">
+
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
@@ -26,7 +28,7 @@
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
     
-    <img src="../img/cc.png" style="width:76px;height:70px;"> 
+    <img src="../img/logoo.png" style="width:76px;height:70px;"> 
     <!-- <h4>Library Management System</h4> -->
 
     <!-- <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
